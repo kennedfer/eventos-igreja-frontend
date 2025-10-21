@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme{
+    --color-border-light: #D1D5DB;
+    --color-background-light: #f6f7f8;
+    --color-primary: oklch(62.7% 0.194 149.214);
+
+    --color-text-light: oklch(37.2% 0.044 257.287);
+}
+
+@view-transition {
+    navigation: auto;
+}
