@@ -9,13 +9,14 @@ import { Modal } from "../components/Modal";
 import { Loader } from "../components/Loader";
 import { ErrorState } from "../components/ErrorState";
 import { useRetry } from "../hooks/useRetry";
+import { API_URL } from "../utils/env";
 
 export const Admin = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [targetId, setTargetId] = useState(0);
 
     const navigate = useNavigate();
-    const { data: response, isLoading, error, mutate} = useSWR(`http://localhost:8080/api/v1/events`, fetcher);
+    const { data: response, isLoading, error, mutate} = useSWR(`${API_URL}/api/v1/events`, fetcher);
     
     const {reloading, onRetry} = useRetry(mutate);
 
@@ -38,7 +39,7 @@ export const Admin = () => {
     }
 
     async function deleteEvent() {
-        const url = "http://localhost:8080/api/v1/events/" + targetId;
+        const url = `${API_URL}/api/v1/events/${targetId}`;
         const method = "DELETE";
 
         const response = await fetch(url, { method });
@@ -56,7 +57,6 @@ export const Admin = () => {
     }
 
     if (isLoading) return <Loader />;
-    console.log(error)
     if(error) return <div className="grid items-center h-full w-full p-5"><ErrorState isLoading={reloading} onRetry={onRetry}/></div>
 
     const events = response?.data? response.data : [];

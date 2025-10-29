@@ -5,6 +5,7 @@ import { fetchData } from "../utils/fetcher";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { API_URL } from "../utils/env";
 
 export function Login() {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ export function Login() {
     async function doLogin(loginData: LoginFields) {
         try {
             setIsLoading(true);
-            const response = await fetchData("http://localhost:8080/api/v1/login", {
+            const response = await fetchData(`${API_URL}/api/v1/login`, {
                 method: "POST",
                 body: JSON.stringify(loginData),
                 headers: {

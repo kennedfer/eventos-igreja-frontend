@@ -8,13 +8,18 @@ import { useEffect, useState } from "react";
 import { ErrorState } from "../components/ErrorState";
 import { useRetry } from "../hooks/useRetry";
 import toast from "react-hot-toast";
+import { API_URL } from "../utils/env";
+import { useEvents } from "../contexts/EventsContext";
 
 export function Edit() {
     const navigate = useNavigate();
     const { eventId } = useParams();
     const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
-    const { data: response, isLoading, error, mutate } = useSWR("http://localhost:8080/api/v1/events/" + eventId, fetcher)
+    const eventApiUrl = `${API_URL}/api/v1/events/${eventId}`;
+
+    const { data: response, isLoading, error } = useSWR(eventApiUrl, fetcher)
+    const {mutate} = useEvents();
 
     const { reloading, onRetry } = useRetry(mutate);
 
@@ -22,7 +27,7 @@ export function Edit() {
         setUpdateLoading(true);
 
         try {
-            let url = "http://localhost:8080/api/v1/events/" + eventId;
+            let url = eventApiUrl;
             let method = "PUT";
 
             const response = await fetch(url, {
@@ -33,6 +38,7 @@ export function Edit() {
             });
 
             if (response.status === 401) {
+                console.log(response)
                 toast.error("Você deve estar logado para editar um evento");
                 return navigate("/entrar");
             }
@@ -46,11 +52,9 @@ export function Edit() {
             if (success) {
                 await mutate()
                 navigate("/eventos");
-            } else {
-                console.log(success)
             }
         } catch (error: any) {
-            console.log(error)
+            console.error(error)
         } finally {
             setUpdateLoading(false)
         }
@@ -74,8 +78,6 @@ export function Edit() {
     
 
     if (error) return <div className="grid items-center h-full w-full p-5"><ErrorState isLoading={reloading} onRetry={onRetry} /></div>
-
-    console.log(error, isLoading, response)
 
     return isLoading ? <Loader /> : (
         <div className="w-full h-auto items-center flex flex-col">

@@ -11,6 +11,9 @@ import { Create } from './pages/Create.tsx'
 import { Edit } from './pages/Edit.tsx'
 import { ProtectedRoute } from './security/ProtectedRoute.tsx'
 import { Toaster } from 'react-hot-toast'
+import { APP_NAME } from './utils/env.ts'
+
+document.title = APP_NAME;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

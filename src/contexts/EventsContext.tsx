@@ -2,6 +2,7 @@ import { createContext, useContext, useState, type Context, type ReactNode } fro
 import type { ChurchEvent } from "../types/types";
 import useSWR, { type KeyedMutator } from "swr";
 import { fetcher } from "../utils/fetcher";
+import { API_URL } from "../utils/env";
 
 type EventsCalendarDate = {
     month: number;
@@ -61,7 +62,7 @@ export function EventsProvider({ children }: { children: ReactNode }) {
     });
 
     const {data:response, error, isLoading, mutate} = useSWR(
-        `http://localhost:8080/api/v1/events?month=${currentDate.month}&year=${currentDate.year}`,
+        `${API_URL}/api/v1/events?month=${currentDate.month}&year=${currentDate.year}`,
         fetcher,
     )
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "../components/Button";
 import { useAuth } from "../contexts/AuthContext";
+import { APP_NAME } from "../utils/env";
 
 export const Header = () => {
     const { token, logout } = useAuth();
@@ -21,7 +22,7 @@ export const Header = () => {
     return (
         <header className="border-b border-border-light px-4 py-3 md:px-10 flex items-center justify-between relative">
             <h1 className="text-lg font-semibold cursor-pointer" onClick={() => navigate("/")}>
-                Calendário de Eventos da Igreja
+                {APP_NAME}
             </h1>
 
             {/* Desktop Menu */}
